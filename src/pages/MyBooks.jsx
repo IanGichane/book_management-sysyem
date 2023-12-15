@@ -30,7 +30,7 @@ export const MyBooks = () => {
 
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [formData, setFormData] = useState(initialData);
-  const [isLoading, setIsLoading] = useState(false);
+ 
 
   function onCloseDrawer() {
     setIsDrawerOpen(false);
@@ -170,8 +170,7 @@ export const MyBooks = () => {
                 </Button>
                 <Button
                   colorScheme="blue"
-                  isLoading={isLoading}
-                  loadingText="Saving event"
+            
                   type="submit"
                   onClick={handleAdddata} 
                 >

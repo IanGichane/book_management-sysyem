@@ -17,7 +17,9 @@ export const BookCard = ({
   title,
   author,
   genre,
+  sub_genre,
   publication_year,
+  ISBN,
   copies_available,
   synopsis,
   cover_image,
@@ -28,7 +30,7 @@ export const BookCard = ({
         <CardBody>
           <Image src={cover_image} alt={title} borderRadius="lg" />
           <Stack mt="6" spacing="3">
-                      <Heading size="md">{title}</Heading>
+            <Heading size="md">{title}</Heading>
             <Tooltip label={synopsis} aria-label="A tooltip">
               synopsis
             </Tooltip>
@@ -39,7 +41,7 @@ export const BookCard = ({
         </CardBody>
         <Divider />
         <CardFooter>
-          <ButtonGroup spacing="1"  >
+          <ButtonGroup spacing="1">
             <Button variant="ghost" colorScheme="blue">
               Borrow
             </Button>
@@ -56,3 +58,6 @@ export const BookCard = ({
     </>
   );
 };
+
+    
+ 

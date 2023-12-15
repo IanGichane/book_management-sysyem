@@ -1,4 +1,5 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
+import { BASE_URL } from "./url";
 
 const DataContext = createContext();
 
@@ -23,6 +24,16 @@ export const DataContextProvider = ({ children }) => {
       },
      
     ]);
+  useEffect(() => {
+    const handleFetch = () => {
+      fetch(`${BASE_URL}/books`)
+        .then((res) => res.json())
+        .then((books) => setBooks(books))
+        .catch((err) => console.log(err));
+    };
+
+    handleFetch(); 
+  }, []);
   return (
     <DataContext.Provider value={{ books, setBooks }}>
       {children}
