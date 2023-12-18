@@ -3,27 +3,32 @@ import { BASE_URL } from "./url";
 
 const DataContext = createContext();
 
+
+const data = [
+  {
+    title: "The Adventure of the Speckled Band",
+    author: "Arthur Conan Doyle",
+    genre: "Fiction",
+    sub_genre: "Adventure",
+    publication_year: 1892,
+    ISBN: "123-456-7890",
+    copies_available: 7,
+    synopsis:
+      "Sherlock Holmes investigates the mysterious death of a woman in a locked room.",
+    cover_image:
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/4/40/Sherlock_Holmes_The_Adventure_of_the_Speckled_Band.jpg/462px-Sherlock_Holmes_The_Adventure_of_the_Speckled_Band.jpg",
+  },
+];
+
+
 export const DataContextProvider = ({ children }) => {
 
   const [borrow, setBorrow] = useState(null)
   const [reserve, setReserve] = useState(null);
   const [checkOut, setCheckOut] = useState(null);
-    const [books, setBooks] = useState([
-      {
-        title: "The Adventure of the Speckled Band",
-        author: "Arthur Conan Doyle",
-        genre: "Fiction",
-        sub_genre: "Adventure",
-        publication_year: 1892,
-        ISBN: "123-456-7890",
-        copies_available: 7,
-        synopsis:
-          "Sherlock Holmes investigates the mysterious death of a woman in a locked room.",
-        cover_image:
-          "https://upload.wikimedia.org/wikipedia/commons/thumb/4/40/Sherlock_Holmes_The_Adventure_of_the_Speckled_Band.jpg/462px-Sherlock_Holmes_The_Adventure_of_the_Speckled_Band.jpg",
-      },
-     
-    ]);
+  const [books, setBooks] = useState(data);
+
+  
   useEffect(() => {
     const handleFetch = () => {
       fetch(`${BASE_URL}/books`)
@@ -45,19 +50,7 @@ export default DataContext;
 
 
 
-//  {
-//         title: "The Girl with the Dragon Tattoo",
-//         author: "Stieg Larsson",
-//         genre: "Fiction",
-//         sub_genre: "Mystery",
-//         publication_year: 2005,
-//         ISBN: "234-567-8901",
-//         copies_available: 5,
-//         synopsis:
-//           "A journalist and a computer hacker investigate a wealthy family suspected of corruption.",
-//         cover_image:
-//           "https://upload.wikimedia.org/wikipedia/en/d/dc/Dragon_Tattoo_ver2.jpg",
-//       },
+
 //       {
 //         title: "Dune",
 //         author: "Frank Herbert",
@@ -123,19 +116,7 @@ export default DataContext;
 //         cover_image:
 //           "https://upload.wikimedia.org/wikipedia/en/d/dc/Dragon_Tattoo_ver2.jpg",
 //       },
-//       {
-//         title: "1984",
-//         author: "George Orwell",
-//         genre: "Fiction",
-//         sub_genre: "Science Fiction",
-//         publication_year: 1949,
-//         ISBN: "345-678-9012",
-//         copies_available: 10,
-//         synopsis:
-//           "A dystopian novel set in a totalitarian society, where a man struggles against the omnipresent surveillance.",
-//         cover_image:
-//           "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/1984first.jpg/440px-1984first.jpg",
-//       },
+
 //       {
 //         title: "Pride and Prejudice",
 //         author: "Jane Austen",

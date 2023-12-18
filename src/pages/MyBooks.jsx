@@ -1,4 +1,5 @@
-import { useState } from "react";
+import {useState } from "react";
+
 
 import {
   Box,
@@ -14,53 +15,84 @@ import {
   DrawerFooter,
 } from "@chakra-ui/react";
 import { FormControl, FormLabel } from "@chakra-ui/react";
+import { BASE_URL } from "../Utilities/url";
 
 export const MyBooks = () => {
-  const initialData = {
-    title: "",
-    author: "",
-    genre: "",
-    sub_genre: "",
-    publication_year: "",
-    ISBN: "",
-    copies_available: "",
-    synopsis: "",
-    cover_image: "",
-  };
+   const initialData = {
+     title: "",
+     author: "",
+     sub_genre: "",
+     ISBN: "",
+     synopsis: "",
+     genre: "",
+     publication_year: "",
+     copies_available: "",
+     cover_image: "",
+   };
 
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+ const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [formData, setFormData] = useState(initialData);
+  const [formError, setFormError] = useState(false);
+
+ const handleChange = (e) => {
+   setFormData({
+     ...formData,
+     [e.target.name]: e.target.value,
+   });
+ };
+
+ function onCloseDrawer() {
+   setIsDrawerOpen(false);
+   setFormData(initialData);
+ }
+
+ function handleDrawer(e) {
+   setIsDrawerOpen(true);
+ }
+
  
-
-  function onCloseDrawer() {
-    setIsDrawerOpen(false);
-    setFormData(initialData);
-  }
-
-
-
-  function handleAddBook(e) {
-    setIsDrawerOpen(true);
-  }
+  
   function handleAdddata(e) {
-     e.preventDefault(); 
-    console.log(formData);
-    setIsDrawerOpen(false);
-    setFormData(initialData);
+    e.preventDefault();
+
+
+    if (
+      !formData.title ||
+      !formData.author ||
+      !formData.genre ||
+      !formData.publication_year ||
+      !formData.ISBN ||
+      !formData.copies_available ||
+      !formData.synopsis
+    ) {
+      setFormError("Please fill all fields");
+      return;
+    }
+    fetch(`${BASE_URL}/books`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        // reset form
+        setFormData(initialData);
+        setIsDrawerOpen(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        setFormError("An error occurred while saving the book.");
+      });
   }
 
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
 
   return (
     <>
       <form onSubmit={handleAdddata}>
         <ButtonGroup variant="outline" spacing="6">
-          <Button colorScheme="blue" type="button" onClick={handleAddBook}>
+          <Button colorScheme="blue" type="button" onClick={handleDrawer}>
             {" "}
             Add book
           </Button>
@@ -79,7 +111,6 @@ export const MyBooks = () => {
                   placeholder="Title"
                   value={formData["title"]}
                   onChange={handleChange}
-                  required
                 />
               </FormControl>
               <FormControl isRequired>
@@ -89,7 +120,6 @@ export const MyBooks = () => {
                   placeholder="author"
                   value={formData["author"]}
                   onChange={handleChange}
-                  required
                 />
               </FormControl>
               <FormControl isRequired>
@@ -99,7 +129,6 @@ export const MyBooks = () => {
                   placeholder="genre"
                   value={formData["genre"]}
                   onChange={handleChange}
-                  required
                 />
               </FormControl>
               <FormControl isRequired>
@@ -109,7 +138,6 @@ export const MyBooks = () => {
                   placeholder="sub_genre"
                   value={formData["sub_genre"]}
                   onChange={handleChange}
-                  required
                 />
               </FormControl>
               <FormControl isRequired>
@@ -117,10 +145,12 @@ export const MyBooks = () => {
                 <Input
                   name="publication_year"
                   placeholder="publication_year"
-                  type="date"
+                  type="number"
+                  min="1000"
+                  max="9999"
+                  step="1"
                   value={formData["publication_year"]}
                   onChange={handleChange}
-                  required
                 />
               </FormControl>
               <FormControl isRequired>
@@ -130,7 +160,6 @@ export const MyBooks = () => {
                   placeholder="ISBN"
                   value={formData["ISBN"]}
                   onChange={handleChange}
-                  required
                 />
               </FormControl>
               <FormControl isRequired>
@@ -141,7 +170,6 @@ export const MyBooks = () => {
                   placeholder="copies_available"
                   value={formData["copies_available"]}
                   onChange={handleChange}
-                  required
                 />
               </FormControl>
               <FormControl isRequired>
@@ -151,7 +179,6 @@ export const MyBooks = () => {
                   placeholder="synopsis"
                   value={formData["synopsis"]}
                   onChange={handleChange}
-                  required
                 />
               </FormControl>
               <FormControl>
@@ -170,11 +197,10 @@ export const MyBooks = () => {
                 </Button>
                 <Button
                   colorScheme="blue"
-            
                   type="submit"
-                  onClick={handleAdddata} 
+                  onClick={handleAdddata}
                 >
-                  Save
+                  {formError ? "Save" : "Retry"}
                 </Button>
               </DrawerFooter>
             </DrawerBody>
@@ -185,42 +211,4 @@ export const MyBooks = () => {
   );
 };
 
-// // You can also reset the form data if needed
-// setFormData(initialData);
 
-// // You might want to perform additional actions, like saving data to the server
-// // For example, you can make an API call here
-
-// // Set isLoading to true while processing the form data
-// setIsLoading(true);
-
-// // Simulate an asynchronous operation (replace this with your actual logic)
-// setTimeout(() => {
-//   // Reset isLoading once the operation is complete
-//   setIsLoading(false);
-
-//   // Close the drawer after saving
-//   onCloseDrawer();
-// }, 1000); // Simulating a delay of 1 second (adjust as needed)
-
-// fetch(`${BASE_URL}/books`, {
-//   method: "POST",
-//   headers: {
-//     "Content-Type": "application/json",
-//   },
-//   body: JSON.stringify(formData),
-// })
-//   .then((res) => res.json())
-//   .then((data) => {
-//     // we assume the operation was a success
-
-//     // reset form
-//     setFormData(initialData);
-
-//     // stop loading
-//     setIsLoading(false);
-//   })
-//   .catch((err) => {
-//     setIsLoading(false);
-//     console.log(err);
-//   });
