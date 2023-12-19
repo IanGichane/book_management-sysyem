@@ -14,6 +14,7 @@ import {
   FormLabel,
   Input,
 } from "@chakra-ui/react";
+import toast from "react-hot-toast";
 
 export const BookingForm = ({ isOpen, onOpen, onClose, bookId, bookName }) => {
   const initialData = {
@@ -46,11 +47,20 @@ export const BookingForm = ({ isOpen, onOpen, onClose, bookId, bookName }) => {
     })
       .then((res) => res.json())
       .then((res) => {
-        console.log(res);
+        
+        if (res.message) {
+          toast.success(res.message, { duration:5000 });
+        }
+        else {
+          toast.error(res.detail, { duration: 6000 });
+        }
         setIsLoading(false);
         onClose();
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err);
+        toast.error('Error occurred.Try again')
+      });
   };
   return (
     <>
