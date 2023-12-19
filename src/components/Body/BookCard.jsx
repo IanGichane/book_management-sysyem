@@ -11,9 +11,12 @@ import {
   ButtonGroup,
   Button,
   Tooltip,
+  useDisclosure,
 } from "@chakra-ui/react";
+import { BookingForm } from './BookingForm';
 
 export const BookCard = ({
+  id,
   title,
   author,
   genre,
@@ -24,8 +27,16 @@ export const BookCard = ({
   synopsis,
   cover_image,
 }) => {
+   const { isOpen,onOpen, onClose } = useDisclosure();
+  
   return (
     <>
+      <BookingForm
+        isOpen={isOpen}
+        onClose={onClose}
+        bookId={id}
+        bookName={title}
+      />
       <Card maxW="sm">
         <CardBody>
           <Image src={cover_image} alt={title} borderRadius="lg" />
@@ -42,7 +53,7 @@ export const BookCard = ({
         <Divider />
         <CardFooter>
           <ButtonGroup spacing="1">
-            <Button variant="ghost" colorScheme="blue">
+            <Button variant="ghost" colorScheme="blue" onClick={onOpen}>
               Borrow
             </Button>
 
